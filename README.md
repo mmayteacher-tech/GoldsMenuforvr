@@ -30,4 +30,4 @@ Built on Windows with **.NET SDK 11.0.100** targeting **net8.0**, referencing `L
 
 ## Safety and sharing
 
-This repository contains only the experimental menu plugin and its project files, **not** the copyrighted Yeeps APK, any game assets, accounts, or login data. Keep personal backups before testing third-party Android modification tools.
+This repository contains only the experimental menu plugin, **not** the copyrighted Yeeps APK, any game assets, accounts, or login data. Keep personal backups before testing third-party Android modification tools.
