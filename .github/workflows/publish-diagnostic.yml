@@ -1,0 +1,21 @@
+name: Publish signed Quest diagnostic APK
+on:
+  push:
+    branches: [publish-lemon-startup-diagnostics]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify and publish the existing signed APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          for chunk in 3425614f29bf8a6514ce4f1fb539a30c674f29df 9fbdaf38cfac9bd8953ecaa1930ec7145a97133c bf9481ed5263b031ef47cb7846c92e019d033de0 a5b14ea46a6a7f7ce29b56732836863f46bd30ed c90cb8a75fa7cd2c303ba5d1e8ba36ea46ded78c 0c30138ef69e36cea22992d97896fb331dac4ff2 176fa6384061e69b6917e0f879e7ec02f924647f 1d87be46bcf119ef86c5d17f918c663f1ed00c07; do
+            gh api -H 'Accept: application/vnd.github.raw+json' "repos/$GH_REPO/git/blobs/$chunk" >> LemonStartupDiagnostics.apk
+          done
+          echo 'fd2e0f86e8317cf3f20b4706d9c2986325cda4c19ec8f105a9f4c0164636ab2c  LemonStartupDiagnostics.apk' | sha256sum -c -
+          gh release create lemon-startup-diagnostics-v1 LemonStartupDiagnostics.apk --target 84088f36a86d80844ed7f777a5f30036fa6850f5 --title 'Lemon Startup Diagnostics' --notes 'Quest ARM64 diagnostic app for Yeeps startup. Open Check installed Yeeps first. APK signature verified at build time. On-headset testing is pending.'
